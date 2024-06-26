@@ -11,6 +11,7 @@
 # We want to use antidote to load modules, so if the user hasn't loaded
 # a pre-req module in their .zsh_plugins.txt, notify them.
 function pmodload {
+  (( $# )) || return
   local missing=0
   case "$1" in
     (editor)   (( $+functions[_prezto-zle-noop] )) || missing=1 ;;
