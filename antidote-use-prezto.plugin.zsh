@@ -24,6 +24,16 @@ function pmodload {
   fi
 }
 
+# https://github.com/sorin-ionescu/prezto/blob/9195b66161b196238cbd52a8a4abd027bdaf5f73/init.zsh#L168-L192
+# Make sure we know where antidote keeps Prezto.
+() {
+  [[ -z "$ZPREZTODIR" ]] || return
+  if (( $+commands[antidote] || $+functions[antidote] )); then
+    export ZPREZTODIR=$(antidote path sorin-ionescu/prezto)
+  else
+    echo >&2 "antidote-use-prezto: neither antidote found, nor \$ZPREZTODIR set."
+    return 1
+  fi
 }
 
 # Source the Prezto configuration file.
@@ -44,14 +54,3 @@ fi
 zstyle -a ':prezto:load' zfunction 'zfunctions'
 for zfunction ("$zfunctions[@]") autoload -Uz "$zfunction"
 unset zfunction{s,}
-
-# Make sure we know where antidote keeps Prezto.
-() {
-  [[ -z "$ZPREZTODIR" ]] || return
-  if (( $+commands[antidote] || $+functions[antidote] )); then
-    export ZPREZTODIR=$(antidote path sorin-ionescu/prezto)
-  else
-    echo >&2 "antidote-use-prezto: neither antidote found, nor \$ZPREZTODIR set."
-    return 1
-  fi
-}
