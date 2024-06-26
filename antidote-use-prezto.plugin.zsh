@@ -7,9 +7,23 @@
 
 0=${(%):-%N}
 
-# Prezto uses pmodload to load its deps, and expects it to be there.
+# Prezto uses pmodload to load its dependencies, and expects it to exist.
+# We want to use antidote to load modules, so if the user hasn't loaded
+# a pre-req module in their .zsh_plugins.txt, notify them.
 function pmodload {
-  # no-op
+  local missing=0
+  case "$1" in
+    (editor)   (( $+functions[_prezto-zle-noop] )) || missing=1 ;;
+    (helper)   (( $+functions[coalesce] ))         || missing=1 ;;
+    (spectrum) [[ -v BG ]] && [[ -v FX ]]          || missing=1 ;;
+    (ruby)     [[ -v local_rbenv_paths ]]          || missing=1 ;;
+  esac
+  if [[ $missing -ne 0 ]]; then
+    echo >&2 "pmodload: required module $1 not loaded: add it to .zsh_plugins.txt."
+    return 1
+  fi
+}
+
 }
 
 # Source the Prezto configuration file.
