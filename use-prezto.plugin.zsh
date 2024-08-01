@@ -1,5 +1,5 @@
 #
-# antidote-use-prezto: A Zsh plugin to make using Prezto with antidote easier.
+# use-prezto: A Zsh plugin to make using Prezto with antidote easier.
 #
 
 # References:
@@ -32,7 +32,7 @@ function pmodload {
   if (( $+commands[antidote] || $+functions[antidote] )); then
     export ZPREZTODIR=$(antidote path sorin-ionescu/prezto)
   else
-    echo >&2 "antidote-use-prezto: neither antidote found, nor \$ZPREZTODIR set."
+    echo >&2 "use-prezto: neither antidote found, nor \$ZPREZTODIR set."
     return 1
   fi
 }
